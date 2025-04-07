@@ -1,0 +1,31 @@
+{
+  "name": "nemo-password-manager",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "password",
+    "manager"
+  ],
+  "homepage": "https://github.com/nedobylskiy/nemo-password-manager#readme",
+  "bugs": {
+    "url": "https://github.com/nedobylskiy/nemo-password-manager/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nedobylskiy/nemo-password-manager.git"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": "Andrei Nedobylskii",
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "4": "^0.0.0",
+    "better-sqlite3": "^11.9.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "sequelize": "^6.37.7"
+  }
+}
