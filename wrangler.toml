@@ -4,7 +4,7 @@ compatibility_date = "2024-04-07"
 [[d1_databases]]
 binding = "DB"
 database_name = "nemo-password-manager"
-database_id = "your-d1-id"
+database_id = "ab7257ac-bebd-4a83-a20f-2e4437cd81ac"
 
 [vars]
 API_ACCESS_KEY = "super-secret-key"
