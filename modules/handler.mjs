@@ -25,5 +25,32 @@ export async function handleRequest(request, db, env) {
         });
     }
 
+    if (pathname === "/spaces") {
+        const spaces = ['space1', 'space2', 'space3'];
+        return new Response(JSON.stringify(spaces, null, 2), {
+            headers: {"Content-Type": "application/json"},
+        });
+    }
+
+    if (pathname.includes("/spaceContent/")) {
+
+        let spaceId = pathname.split("/").pop();
+
+        const content = [
+            {id: 1, name: "Content 1", spaceId: spaceId, encryptedValue: "encryptedValue1", type: "password"},
+            {id: 2, name: "Content 2", spaceId: spaceId, encryptedValue: "encryptedValue2", type: "key"},
+            {id: 3, name: "Content 3", spaceId: spaceId, encryptedValue: "encryptedValue3", type: "text"},
+        ]
+
+        const space = {
+            spaceKeyHash: "50d139ada3365459863a6b1a512ddb18d6275df0c91aaf992581507ce0abc869",
+            content: content,
+        }
+
+        return new Response(JSON.stringify(space, null, 2), {
+            headers: {"Content-Type": "application/json"},
+        });
+    }
+
     return new Response("Nothing to do here", {status: 404});
 }

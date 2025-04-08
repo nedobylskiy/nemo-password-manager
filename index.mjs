@@ -15,6 +15,9 @@ const db = new SQLiteAdapter();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//Static
+app.use(express.static('static'));
+
 app.all('/*', async (req, res) => {
     try {
         // Ensure path starts with forward slash
@@ -34,6 +37,8 @@ app.all('/*', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
 
 app.listen(PORT, HOST, () => {
     console.log(`Server running at http://${HOST}:${PORT}`);

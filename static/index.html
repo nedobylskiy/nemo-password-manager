@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Nemo Password Manager</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="pattern-lock-js/dist/patternlock.min.css">
+
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="pattern-lock-js/dist/patternlock.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js" integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+<body>
+
+<div id="spacesPage">
+    <h1>Nemo Password Manager</h1>
+    <p>Select space to get access to saved data or create a new one</p>
+    <div id="spacesList">
+        <div class="spaceItem">
+            <h2>Space 1</h2>
+        </div>
+        <div class="spaceItem">
+            <h2>Space 2</h2>
+        </div>
+        <div class="spaceItem">
+            <h2>Create new space ➕</h2>
+        </div>
+    </div>
+</div>
+
+<div id="spaceContentPage" style="display: none;">
+    <h1>🔙</h1>
+    <p>Select space to get access to saved data or create a new one</p>
+    <div id="contentList">
+        <div class="contentItem">
+            <h2>Content item 1</h2>
+        </div>
+        <div class="contentItem">
+            <h2>Content item 2</h2>
+        </div>
+        <div class="contentItem">
+            <h2>Add content ➕</h2>
+        </div>
+    </div>
+</div>
+
+
+<div id="graphicKeyInput">
+    <h2 id="graphicKeyInputMessage">Enter graphic key</h2>
+    <svg class="patternlock" id="lock" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g class="lock-actives"></g>
+        <g class="lock-lines"></g>
+        <g class="lock-dots">
+            <circle cx="20" cy="20" r="2"/>
+            <circle cx="50" cy="20" r="2"/>
+            <circle cx="80" cy="20" r="2"/>
+
+            <circle cx="20" cy="50" r="2"/>
+            <circle cx="50" cy="50" r="2"/>
+            <circle cx="80" cy="50" r="2"/>
+
+            <circle cx="20" cy="80" r="2"/>
+            <circle cx="50" cy="80" r="2"/>
+            <circle cx="80" cy="80" r="2"/>
+        </g>
+    </svg>
+</div>
+
+
+<script src="main.js" type="module"></script>
+
+</body>
+</html>
