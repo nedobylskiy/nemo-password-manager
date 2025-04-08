@@ -4,6 +4,7 @@ dotenv.config();
 import express from 'express';
 import {SQLiteAdapter} from './modules/sqlite-adapter.mjs';
 import {handleRequest} from './modules/handler.mjs';
+import * as fs from "node:fs";
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
