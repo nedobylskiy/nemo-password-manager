@@ -8,7 +8,6 @@ import * as fs from "node:fs";
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
-const API_ACCESS_KEY = process.env.API_ACCESS_KEY || 'default_access_key';
 
 const app = express();
 const db = new SQLiteAdapter();

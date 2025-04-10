@@ -8,7 +8,7 @@ export class D1Adapter extends DBAdapter {
 
     async createSpace(spaceName, spaceKeyHash) {
         const result = await this.d1.prepare(
-            "INSERT INTO spaces (name, key_hash) VALUES (?, ?)"
+            "INSERT INTO spaces (spaceId, spaceKeyHash) VALUES (?, ?)"
         )
             .bind(spaceName, spaceKeyHash)
             .run();
@@ -17,34 +17,40 @@ export class D1Adapter extends DBAdapter {
 
     async listSpaces() {
         const { results } = await this.d1.prepare(
-            "SELECT id, name, key_hash FROM spaces"
+            "SELECT * FROM spaces"
         ).all();
         return results;
     }
 
     async getSpaceContent(spaceId) {
         const { results } = await this.d1.prepare(
-            "SELECT content FROM space_contents WHERE space_id = ?"
+            "SELECT * FROM content WHERE spaceId = ?"
         )
             .bind(spaceId)
             .all();
         return results;
     }
 
-    async addContent(spaceId, content) {
-        await this.d1.prepare(
-            "INSERT INTO space_contents (space_id, content) VALUES (?, ?)"
-        )
-            .bind(spaceId, content)
-            .run();
-    }
-
     async getSpace(spaceId) {
-        const result = await this.d1.prepare(
-            "SELECT id, name, key_hash FROM spaces WHERE id = ?"
+        const space = await this.d1.prepare(
+            "SELECT * FROM spaces WHERE spaceId = ?"
         )
             .bind(spaceId)
             .first();
-        return result;
+
+        if (!space) {
+            return null;
+        }
+
+        const content = await this.getSpaceContent(spaceId);
+        return { ...space, content };
+    }
+
+    async addContent(spaceId, content) {
+        await this.d1.prepare(
+            "INSERT INTO content (spaceId, name, type, encryptedValue) VALUES (?, ?, ?, ?)"
+        )
+            .bind(spaceId, content.name, content.type, content.encryptedValue)
+            .run();
     }
 }

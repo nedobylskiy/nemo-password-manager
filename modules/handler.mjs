@@ -1,17 +1,32 @@
 export async function handleRequest(request, db, env) {
 
-    const API_ACCESS_KEY = process.env.API_ACCESS_KEY || env?.API_ACCESS_KEY || 'default_access_key';
+    //console.log("Handling request: ", env);
 
+    const clonedRequest = request.clone();
+
+    let API_ACCESS_KEY = 'default_access_key';
+
+    if (typeof process !== 'undefined') {
+       // console.log("Process env: ", process);
+        API_ACCESS_KEY = process?.env?.API_ACCESS_KEY || API_ACCESS_KEY;
+    }
+
+    if (typeof env !== 'undefined') {
+        API_ACCESS_KEY = env?.API_ACCESS_KEY || API_ACCESS_KEY;
+    }
+
+    let body = request.body ? (await clonedRequest.json() || {}) : {};
+
+   // console.log("Request body: ", body);
 
     const {pathname} = new URL(request.url);
 
     // Check for API access key in the request headers
-    const apiKey = request.headers.get('x-api-key') || request.headers.get('Authorization') || request.body?.apiKey;
+    const apiKey = request.headers.get('x-api-key') || request.headers.get('Authorization') || body?.apiKey;
 
     if (!apiKey || apiKey !== API_ACCESS_KEY) {
         return new Response("Unauthorized", {status: 401});
     }
-
 
 
     if (pathname === "/spaces") {
@@ -40,7 +55,7 @@ export async function handleRequest(request, db, env) {
     }
 
     if (pathname === "/createSpace") {
-        let {spaceName, spaceKeyHash} = await request.json();
+        let {spaceName, spaceKeyHash} = body;
 
         if (!spaceName || !spaceKeyHash) {
             return new Response("Missing space name or key hash", {status: 400});
@@ -52,13 +67,13 @@ export async function handleRequest(request, db, env) {
     }
 
     if (pathname === "/addContent") {
-        let {spaceId, name, type, encryptedValue} = await request.json();
+        let {spaceId, name, type, encryptedValue} = body;
 
         if (!spaceId || !name || !type || !encryptedValue) {
             return new Response("Missing space id, name, type or encrypted value", {status: 400});
         }
 
-        console.log("Adding content: ", spaceId, name, type, encryptedValue);
+        //console.log("Adding content: ", spaceId, name, type, encryptedValue);
 
         await db.addContent(spaceId, {name, type, encryptedValue});
 

@@ -4,27 +4,20 @@ import { handleRequest } from './modules/handler.mjs';
 
 export default {
     async fetch(request, env, ctx) {
-        try {
-            // Try to serve static files first
-            if (request.method === 'GET') {
-                try {
-                    return await getAssetFromKV({
-                        request,
-                        waitUntil: ctx.waitUntil.bind(ctx),
-                        env
-                    }, {
-                        ASSET_MANIFEST: env.__STATIC_CONTENT_MANIFEST,
-                        ASSET_NAMESPACE: env.__STATIC_CONTENT
-                    });
-                } catch (e) {
-                    // If static file not found, continue to API handling
-                }
-            }
+        const clonedRequest = request.clone();
 
-            // Handle API requests
+        try {
+            let result = await env.ASSETS.fetch(clonedRequest);
+            if (result.status === 200) {
+                return result;
+            }
+        } catch (err) {}
+
+        try {
             const db = new D1Adapter(env.DB);
             return await handleRequest(request, db, env);
         } catch (error) {
+            console.error('Error handling request:', error);
             return new Response('Internal Server Error', { status: 500 });
         }
     }

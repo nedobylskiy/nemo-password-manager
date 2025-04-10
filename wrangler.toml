@@ -1,13 +1,15 @@
 name = "nemo-password-manager"
 compatibility_date = "2024-04-07"
+main = "worker.mjs"
 
-[site]
-bucket = "./static"
+[assets]
+directory = "./static"
+binding = "ASSETS"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "nemo-password-manager"
-database_id = "ab7257ac-bebd-4a83-a20f-2e4437cd81ac"
+database_id = "6c29f57b-705b-46f4-b8b1-6991366940e7"
 
 [vars]
 API_ACCESS_KEY = "super-secret-key"
