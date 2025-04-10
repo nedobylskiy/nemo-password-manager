@@ -38,7 +38,7 @@
 </div>
 
 <div id="spaceContentPage" style="display: none;">
-    <h1>🔙</h1>
+    <h1 class="backBtn" id="backToSpaces">🔙</h1>
     <p>Select space to get access to saved data or create a new one</p>
     <div id="contentList">
         <div class="contentItem">
@@ -55,7 +55,8 @@
 
 <div id="viewDecryptedContent" style="display: none;" class="popup">
     <div>
-        <h1 onclick="$('#viewDecryptedContent').fadeOut(200); $('#decryptedContentText').val(''); window.timeout=0;" class="backBtn">🔙</h1>
+        <h1 onclick="$('#viewDecryptedContent').fadeOut(200); $('#decryptedContentText').val(''); window.timeout=0;"
+            class="backBtn">🔙</h1>
         <p>Decrypted content will be displayed here</p>
         <div id="decryptedContent">
             <h2 id="decryptedContentName">Decrypted Content name</h2>
@@ -67,7 +68,64 @@
 </div>
 
 
-<div 
+<div id="createNewSpace" style="display: none;" class="popup">
+    <div>
+        <h1 onclick="$('#createNewSpace').fadeOut(200); $('#newSpaceName').val('');" class="backBtn">🔙</h1>
+        <p>Select icon</p>
+        <select id="spaceIconSelect">
+            <option value="🔒">🔒 Lock</option>
+            <option value="🔑">🔑 Key</option>
+            <option value="📝">📝 Note</option>
+            <option value="💳">💳 Card</option>
+            <option value="🏦">🏦 Bank</option>
+            <option value="💼">💼 Work</option>
+            <option value="🏠">🏠 Home</option>
+            <option value="📱">📱 Mobile</option>
+            <option value="💻">💻 Computer</option>
+            <option value="🌐">🌐 Web</option>
+            <option value="📧">📧 Email</option>
+            <option value="💬">💬 Messages</option>
+            <option value="🎮">🎮 Games</option>
+            <option value="🎬">🎬 Media</option>
+            <option value="📺">📺 Streaming</option>
+            <option value="🛒">🛒 Shopping</option>
+            <option value="💰">💰 Finance</option>
+            <option value="📄">📄 Documents</option>
+            <option value="🔐">🔐 Security</option>
+            <option value="📁">📁 Folder</option>
+            <option value="⭐">⭐ Important</option>
+            <option value="❤️">❤️ Personal</option>
+            <option value="🏢">🏢 Business</option>
+            <option value="✈️">✈️ Travel</option>
+            <option value="🎵">🎵 Music</option>
+            <option value="📚">📚 Education</option>
+            <option value="🏥">🏥 Healthcare</option>
+            <option value="🚗">🚗 Vehicle</option>
+            <option value="📦">📦 Package</option>
+            <option value="🔗">🔗 Links</option>
+        </select>
+        <p>Enter new space name</p>
+        <input type="text" id="newSpaceName" placeholder="New space name"/>
+        <button id="createNewSpaceBtn" onclick="createSpace()">Create</button>
+    </div>
+</div>
+
+<div id="addContent" style="display: none;" class="popup">
+    <div>
+        <h1 onclick="$('#addContent').fadeOut(200); $('#newSpaceName').val('');" class="backBtn">🔙</h1>
+        <p>Select protected content type</p>
+        <select id="contentTypeSelect">
+            <option value="password">🔒 Password</option>
+            <option value="text">📝 Text</option>
+            <option value="card">💳 Card</option>
+            <option value="key">🔑 Key</option>
+        </select>
+        <p>Enter content name</p>
+        <input type="text"  id="newContentName" placeholder="New content name">
+        <textarea  id="newContent" placeholder="Content"></textarea>
+        <button id="createNewContentBtn" onclick="addContent()">Create</button>
+    </div>
+</div>
 
 <div id="graphicKeyInput">
     <h2 id="graphicKeyInputMessage">Enter graphic key</h2>

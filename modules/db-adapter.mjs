@@ -1,9 +1,21 @@
 export class DBAdapter {
-    async addMessage(text) {
+    async createSpace(spaceName, spaceKeyHash) {
         throw new Error("Not implemented");
     }
 
-    async listMessages() {
+    async listSpaces() {
+        throw new Error("Not implemented");
+    }
+
+    async getSpaceContent(spaceId) {
+        throw new Error("Not implemented");
+    }
+
+    async addContent(spaceId, content) {
+        throw new Error("Not implemented");
+    }
+
+    async getSpace(spaceId) {
         throw new Error("Not implemented");
     }
 }

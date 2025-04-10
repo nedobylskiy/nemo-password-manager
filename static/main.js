@@ -8,6 +8,7 @@ let ACCESS_KEY = '';
 
 //************
 let lock;
+let currentSpace;
 
 let graphicLockDynamicCallback = function () {
 }
@@ -41,18 +42,75 @@ function getGraphicKey() {
 }
 
 async function getEnhancedGraphicKey(message = 'Enter graphic key') {
-    $('graphicKeyInputMessage').text(message);
-    $("#graphicKeyInput").fadeIn(200);
-    let key = await getGraphicKey();
+    try {
+        console.log("getEnhancedGraphicKey", message);
+        $('#graphicKeyInputMessage').text(message);
+        $("#graphicKeyInput").fadeIn(200);
+        let key = await getGraphicKey();
 
-    //Enhance key by  hashing access key + graphic key
+        //Enhance key by  hashing access key + graphic key
 
-    $("#graphicKeyInput").fadeOut(200);
-    return await Crypto.makeEnhancedKey(key, ACCESS_KEY);
+        $("#graphicKeyInput").fadeOut(200);
+        return await Crypto.makeEnhancedKey(key, ACCESS_KEY);
+    } catch (e) {
+        console.error("Error getting graphic key", e);
+        alert("Error getting graphic key");
+        $("#graphicKeyInput").fadeOut(200);
+        throw e;
+    }
 }
 
 window.getEnhancedGraphicKey = getEnhancedGraphicKey;
 
+
+async function addContent() {
+    let name = $("#newContentName").val();
+    let type = $("#contentTypeSelect").val();
+    let value = $("#newContent").val();
+
+    if (!name || !type || !value) {
+        alert("All fields are required");
+        return;
+    }
+
+    let key = await getEnhancedGraphicKey('Enter key for adding content: ' + name);
+
+    let keyHash = await Crypto.hash(key);
+
+    if (keyHash !== currentSpace.spaceKeyHash) {
+        alert("This key should be the same as the one used to create the space");
+        return;
+    }
+
+    let encryptedValue = await Crypto.encrypt(JSON.stringify({value}), key);
+
+    let response = await fetch("/addContent", {
+        method: "POST",
+        headers: {
+            "x-api-key": ACCESS_KEY,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            type: type,
+            encryptedValue: encryptedValue,
+            spaceId: currentSpace.spaceId
+        })
+    });
+
+    if (response.status !== 200) {
+        alert("Error creating space");
+        return;
+    }
+
+    $('#addContent').fadeOut(200);
+    $('#newSpaceName').val("");
+    $('#spaceIconSelect').val("🔒");
+
+    await loadSpace(currentSpace.spaceId, key);
+}
+
+window.addContent = addContent;
 
 async function getSpaces() {
     let response = await fetch("/spaces", {
@@ -84,13 +142,13 @@ async function renderSpaces() {
         `);
     }
 
-    spacesDiv.append(`<div class="spaceItem">
+    spacesDiv.append(`<div class="spaceItem" onclick="$('#createNewSpace').fadeIn(200);">
             <h2>Create new space ➕</h2>
         </div>`);
 }
 
 async function getSpaceContent(spaceId) {
-    let response = await fetch(`/spaceContent/${spaceId}`, {
+    let response = await fetch(`/spaceContent/${encodeURIComponent(spaceId)}`, {
         method: "GET",
         headers: {
             "x-api-key": ACCESS_KEY,
@@ -105,11 +163,13 @@ async function getSpaceContent(spaceId) {
     return data;
 }
 
-async function loadSpace(spaceId) {
+async function loadSpace(spaceId, key = null) {
     let space = await getSpaceContent(spaceId);
 
-    //TODO: check spaceKeyHash
-    let key = await getEnhancedGraphicKey('Enter key for space: ' + spaceId);
+
+    if (!key) {
+        key = await getEnhancedGraphicKey('Enter key for space: ' + spaceId);
+    }
 
     let keyHash = await Crypto.hash(key);
 
@@ -143,6 +203,9 @@ async function loadSpace(spaceId) {
             case "text":
                 type = "📝";
                 break;
+            case "card":
+                type = "💳";
+                break;
             default:
                 type = "❓";
         }
@@ -156,29 +219,74 @@ async function loadSpace(spaceId) {
     }
 
     contentDiv.append(`
-        <div class="contentItem">
+        <div class="contentItem" onclick="$('#addContent').fadeIn(200);">
             <h2>Add protected item ➕</h2>
         </div>
     `);
+
+    currentSpace = {...space, spaceId: spaceId};
 }
 
 window.loadSpace = loadSpace;
 
-async function unlockAndShowContent(name, encryptedContent, type ) {
+async function createSpace() {
+
+    let icon = $("#spaceIconSelect").val();
+    let spaceName = $("#newSpaceName").val();
+    if (!spaceName) {
+        alert("Space name is required");
+        return;
+    }
+
+    spaceName = icon + " " + spaceName;
+
+    let key = await getEnhancedGraphicKey('Enter key for creating space: ' + spaceName);
+
+
+    let spaceKeyHash = await Crypto.hash(key);
+
+    let response = await fetch("/createSpace", {
+        method: "POST",
+        headers: {
+            "x-api-key": ACCESS_KEY,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            spaceName: spaceName,
+            spaceKeyHash: spaceKeyHash
+        })
+    });
+
+    if (response.status !== 200) {
+        alert("Error creating space");
+        return;
+    }
+
+    $('#createNewSpace').fadeOut(200);
+    $('#newSpaceName').val("");
+    $('#spaceIconSelect').val("🔒");
+
+    await renderSpaces();
+}
+
+window.createSpace = createSpace;
+
+async function unlockAndShowContent(name, encryptedContent, type) {
     let key = await getEnhancedGraphicKey('Enter key for content: ' + name);
-    try{
-        let content = await Crypto.decrypt(encryptedContent, key);
+    try {
+        let content = JSON.parse(await Crypto.decrypt(encryptedContent, key));
 
-       // console.log("Decrypted content: ", content);
+        // console.log("Decrypted content: ", content);
 
-        await viewDecryptedContent(name, content, type);
+        await viewDecryptedContent(name, content.value, type);
 
-    }catch (e) {
+    } catch (e) {
         alert("Key is invalid");
         return;
     }
 
 }
+
 window.unlockAndShowContent = unlockAndShowContent;
 
 window.timeout = 13;
@@ -190,8 +298,8 @@ async function viewDecryptedContent(name, content, type) {
 
     window.timeout = 13;
 
-  let interval =   setInterval(function () {
-      window.timeout--;
+    let interval = setInterval(function () {
+        window.timeout--;
         $('#decryptedContentTimeout').text(window.timeout);
         if (window.timeout <= 0) {
             $('#viewDecryptedContent').fadeOut(200);
@@ -245,6 +353,11 @@ async function init() {
         }, function (err) {
             console.error('Could not copy text: ', err);
         });
+    });
+
+    $('#backToSpaces').click(function () {
+        $('#spaceContentPage').fadeOut(200);
+        $('#spacesPage').fadeIn(200);
     });
 
 }

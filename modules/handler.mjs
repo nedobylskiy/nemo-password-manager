@@ -1,4 +1,3 @@
-
 export async function handleRequest(request, db, env) {
 
     const API_ACCESS_KEY = process.env.API_ACCESS_KEY || env?.API_ACCESS_KEY || 'default_access_key';
@@ -13,20 +12,17 @@ export async function handleRequest(request, db, env) {
         return new Response("Unauthorized", {status: 401});
     }
 
-    if (pathname === "/add") {
-        await db.addMessage("Hello universal!");
-        return new Response("Inserted!");
-    }
 
-    if (pathname === "/list") {
-        const messages = await db.listMessages();
-        return new Response(JSON.stringify(messages, null, 2), {
-            headers: {"Content-Type": "application/json"},
-        });
-    }
 
     if (pathname === "/spaces") {
-        const spaces = ['space1', 'space2', 'space3'];
+        let spaces = await db.listSpaces();
+
+        if (!spaces) {
+            spaces = [];
+        }
+
+        spaces = spaces.map(space => space.spaceId);
+
         return new Response(JSON.stringify(spaces, null, 2), {
             headers: {"Content-Type": "application/json"},
         });
@@ -34,22 +30,39 @@ export async function handleRequest(request, db, env) {
 
     if (pathname.includes("/spaceContent/")) {
 
-        let spaceId = pathname.split("/").pop();
+        let spaceId = decodeURIComponent(pathname.split("/").pop());
 
-        const content = [
-            {id: 1, name: "Content 1", spaceId: spaceId, encryptedValue: "a12d9ab23e6a3d6b2d1c991cd0204fa7474601f7bd53581c13e3d04021891511TKKf0kXkKMfhXru/falZCg==", type: "password"},
-            {id: 2, name: "Content 2", spaceId: spaceId, encryptedValue: "a12d9ab23e6a3d6b2d1c991cd0204fa7474601f7bd53581c13e3d04021891511TKKf0kXkKMfhXru/falZCg==", type: "key"},
-            {id: 3, name: "Content 3", spaceId: spaceId, encryptedValue: "a12d9ab23e6a3d6b2d1c991cd0204fa7474601f7bd53581c13e3d04021891511TKKf0kXkKMfhXru/falZCg==", type: "text"},
-        ]
-
-        const space = {
-            spaceKeyHash: "50d139ada3365459863a6b1a512ddb18d6275df0c91aaf992581507ce0abc869",
-            content: content,
-        }
+        const space = await db.getSpace(spaceId);
 
         return new Response(JSON.stringify(space, null, 2), {
             headers: {"Content-Type": "application/json"},
         });
+    }
+
+    if (pathname === "/createSpace") {
+        let {spaceName, spaceKeyHash} = await request.json();
+
+        if (!spaceName || !spaceKeyHash) {
+            return new Response("Missing space name or key hash", {status: 400});
+        }
+
+        await db.createSpace(spaceName, spaceKeyHash);
+
+        return new Response("Space created", {status: 200});
+    }
+
+    if (pathname === "/addContent") {
+        let {spaceId, name, type, encryptedValue} = await request.json();
+
+        if (!spaceId || !name || !type || !encryptedValue) {
+            return new Response("Missing space id, name, type or encrypted value", {status: 400});
+        }
+
+        console.log("Adding content: ", spaceId, name, type, encryptedValue);
+
+        await db.addContent(spaceId, {name, type, encryptedValue});
+
+        return new Response("Content added", {status: 200});
     }
 
     return new Response("Nothing to do here", {status: 404});

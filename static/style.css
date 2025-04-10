@@ -18,6 +18,10 @@ body {
     max-width: 600px;
     margin: 0 auto;
     padding: 1rem;
+    position: absolute;
+    z-index: 1000;
+    background: #fff;
+    width: 100%;
 }
 
 #graphicKeyInput{
@@ -67,4 +71,53 @@ body {
 
 #decryptedContentTimeout{
     color: #5e0000;
+}
+
+#spaceIconSelect, #contentTypeSelect{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+    border: 1px solid #313131;
+    width: 100%;
+}
+
+#newSpaceName, #newContentName{
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #313131;
+    border-radius: 0px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+#createNewSpaceBtn, #createNewContentBtn{
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #313131;
+    border-radius: 0px;
+    background: #313131;
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+}
+
+#createNewSpaceBtn:hover{
+    background: #000;
+}
+
+#newContent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    border: 1px solid #313131;
+    width: 100%;
+    min-height: 8rem;
+    box-sizing: border-box;
+    padding: 1rem 1rem 20px;
+    margin: 0 auto 20px;
 }
