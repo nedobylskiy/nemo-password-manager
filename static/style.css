@@ -24,6 +24,10 @@ body {
     width: 100%;
 }
 
+#lock{
+    max-width: 600px;
+}
+
 #graphicKeyInput{
     position: fixed;
     top: 0;
