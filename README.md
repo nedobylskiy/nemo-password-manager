@@ -1,5 +1,7 @@
 # Nemo Password manager
 
+![image](static/screenshots/desktop1.png)
+
 ## Description
 
 Nemo Password manager is a self-hosted password manager that allows you to store and manage your passwords, credit cards, and keys securely. It is designed to be easy to use and provides a simple interface for managing your passwords within strong encryption and keys management.

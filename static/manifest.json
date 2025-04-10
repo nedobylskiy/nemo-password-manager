@@ -1,10 +1,12 @@
 {
   "name": "Nemo Password",
   "short_name": "NemoPass",
-  "start_url": ".",
+  "description": "A password manager that uses pattern lock to store and retrieve passwords securely.",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "orientation": "portrait",
+  "background_color": "#f0f0f0",
+  "theme_color": "#f0f0f0",
   "icons": [
     {
       "src": "icon-192.png",
@@ -15,6 +17,32 @@
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile1.png",
+      "sizes": "1080x2340",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/mobile2.png",
+      "sizes": "1080x2340",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/desktop1.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/desktop1.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }
