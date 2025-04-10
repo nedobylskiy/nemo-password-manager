@@ -10,6 +10,16 @@ body {
     padding: 1rem;
 }
 
+.popup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
 #graphicKeyInput{
     position: fixed;
     top: 0;
@@ -19,6 +29,16 @@ body {
     background: rgba(255, 255, 255, 0.59);
     z-index: 1000;
     text-align: center;
+}
+
+#viewDecryptedContent{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 1000;
 }
 
 .spaceItem, .contentItem{
@@ -35,4 +55,16 @@ body {
 
 .spaceItem:active, .contentItem:active{
     background: #2693ff;
+}
+
+.backBtn{
+    cursor: pointer;
+}
+
+.backBtn:hover{
+    filter: brightness(0.9);
+}
+
+#decryptedContentTimeout{
+    color: #5e0000;
 }

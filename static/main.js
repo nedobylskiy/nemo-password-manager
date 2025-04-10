@@ -166,12 +166,13 @@ window.loadSpace = loadSpace;
 
 async function unlockAndShowContent(name, encryptedContent, type ) {
     let key = await getEnhancedGraphicKey('Enter key for content: ' + name);
-
     try{
         let content = await Crypto.decrypt(encryptedContent, key);
 
+       // console.log("Decrypted content: ", content);
 
-        console.log("Decrypted content: ", content);
+        await viewDecryptedContent(name, content, type);
+
     }catch (e) {
         alert("Key is invalid");
         return;
@@ -179,6 +180,27 @@ async function unlockAndShowContent(name, encryptedContent, type ) {
 
 }
 window.unlockAndShowContent = unlockAndShowContent;
+
+window.timeout = 13;
+
+async function viewDecryptedContent(name, content, type) {
+    $('#viewDecryptedContent').fadeIn(200);
+    $('#decryptedContentName').text(name);
+    $('#decryptedContentText').val(content);
+
+    window.timeout = 13;
+
+  let interval =   setInterval(function () {
+      window.timeout--;
+        $('#decryptedContentTimeout').text(window.timeout);
+        if (window.timeout <= 0) {
+            $('#viewDecryptedContent').fadeOut(200);
+            $('#decryptedContentText').val("");
+            clearInterval(interval);
+            return;
+        }
+    }, 1000);
+}
 
 async function init() {
     initGraphicLocker();
@@ -210,6 +232,20 @@ async function init() {
     $("#graphicKeyInput").fadeOut(0);
 
     await renderSpaces();
+
+    $('#decryptedContentText').click(function () {
+        let input = $(this);
+        input.select();
+        //Copy to clipboard
+        navigator.clipboard.writeText(input.val()).then(function () {
+            input.css('background-color', '#4CAF50');
+            setTimeout(function () {
+                input.css('background-color', '');
+            }, 500);
+        }, function (err) {
+            console.error('Could not copy text: ', err);
+        });
+    });
 
 }
 

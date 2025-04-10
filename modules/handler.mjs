@@ -37,9 +37,9 @@ export async function handleRequest(request, db, env) {
         let spaceId = pathname.split("/").pop();
 
         const content = [
-            {id: 1, name: "Content 1", spaceId: spaceId, encryptedValue: "encryptedValue1", type: "password"},
-            {id: 2, name: "Content 2", spaceId: spaceId, encryptedValue: "encryptedValue2", type: "key"},
-            {id: 3, name: "Content 3", spaceId: spaceId, encryptedValue: "encryptedValue3", type: "text"},
+            {id: 1, name: "Content 1", spaceId: spaceId, encryptedValue: "a12d9ab23e6a3d6b2d1c991cd0204fa7474601f7bd53581c13e3d04021891511TKKf0kXkKMfhXru/falZCg==", type: "password"},
+            {id: 2, name: "Content 2", spaceId: spaceId, encryptedValue: "a12d9ab23e6a3d6b2d1c991cd0204fa7474601f7bd53581c13e3d04021891511TKKf0kXkKMfhXru/falZCg==", type: "key"},
+            {id: 3, name: "Content 3", spaceId: spaceId, encryptedValue: "a12d9ab23e6a3d6b2d1c991cd0204fa7474601f7bd53581c13e3d04021891511TKKf0kXkKMfhXru/falZCg==", type: "text"},
         ]
 
         const space = {

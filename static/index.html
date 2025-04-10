@@ -14,7 +14,9 @@
     <script src="jquery-3.7.1.min.js"></script>
     <script src="pattern-lock-js/dist/patternlock.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js" integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"
+            integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
 <body>
@@ -51,6 +53,21 @@
     </div>
 </div>
 
+<div id="viewDecryptedContent" style="display: none;" class="popup">
+    <div>
+        <h1 onclick="$('#viewDecryptedContent').fadeOut(200); $('#decryptedContentText').val(''); window.timeout=0;" class="backBtn">🔙</h1>
+        <p>Decrypted content will be displayed here</p>
+        <div id="decryptedContent">
+            <h2 id="decryptedContentName">Decrypted Content name</h2>
+            <textarea id="decryptedContentText" rows="10" cols="50">Decrypted content will be displayed here</textarea>
+            <p>Click on key to copy</p>
+            <h3 id="decryptedContentTimeout">15</h3>
+        </div>
+    </div>
+</div>
+
+
+<div 
 
 <div id="graphicKeyInput">
     <h2 id="graphicKeyInputMessage">Enter graphic key</h2>

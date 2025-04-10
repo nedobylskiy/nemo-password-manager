@@ -44,7 +44,13 @@ export default class Crypto {
                 mode: CryptoJS.mode.CBC
             });
 
-            return decrypted.toString(CryptoJS.enc.Utf8);
+            let decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+
+            if (!decryptedText) {
+                throw new Error('Decryption failed');
+            }
+
+            return decryptedText;
         } catch (e) {
             throw new Error('Decryption failed');
         }
