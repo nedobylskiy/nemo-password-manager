@@ -27,18 +27,6 @@
       "form_factor": "narrow"
     },
     {
-      "src": "/screenshots/mobile2.png",
-      "sizes": "1080x2340",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/screenshots/desktop1.png",
-      "sizes": "1920x1080",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
       "src": "/screenshots/desktop1.png",
       "sizes": "1920x1080",
       "type": "image/png",
