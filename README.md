@@ -46,7 +46,7 @@ wrangler d1 create nemo-password-manager
 
 3. Import the database schema:
 ```bash
-wrangler d1 database import nemo-password-manager --file ./schema.sql
+wrangler d1 execute nemo-password-manager --file ./schema.sql
 ```
 
 4. Copy provided database data to wrangler.toml
