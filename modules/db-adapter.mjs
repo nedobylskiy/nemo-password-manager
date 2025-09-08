@@ -18,4 +18,8 @@ export class DBAdapter {
     async getSpace(spaceId) {
         throw new Error("Not implemented");
     }
+
+    async deleteContent(spaceId, contentId) {
+        throw new Error("Not implemented");
+    }
 }

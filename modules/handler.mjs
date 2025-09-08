@@ -80,5 +80,21 @@ export async function handleRequest(request, db, env) {
         return new Response("Content added", {status: 200});
     }
 
+    if (pathname === "/deleteContent") {
+        let {spaceId, contentId} = body;
+
+        if (!spaceId || !contentId) {
+            return new Response("Missing space id or content id", {status: 400});
+        }
+
+        const deleted = await db.deleteContent(spaceId, contentId);
+
+        if (deleted) {
+            return new Response("Content deleted", {status: 200});
+        } else {
+            return new Response("Content not found", {status: 404});
+        }
+    }
+
     return new Response("Nothing to do here", {status: 404});
 }

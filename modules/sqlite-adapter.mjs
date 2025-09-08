@@ -50,4 +50,10 @@ export class SQLiteAdapter extends DBAdapter {
         const stmt = this.db.prepare("INSERT INTO content (spaceId, name, type, encryptedValue) VALUES (?, ?, ?, ?)");
         stmt.run(spaceId, content.name, content.type, content.encryptedValue);
     }
+
+    async deleteContent(spaceId, contentId) {
+        const stmt = this.db.prepare("DELETE FROM content WHERE spaceId = ? AND id = ?");
+        const result = stmt.run(spaceId, contentId);
+        return result.changes > 0; // Returns true if a row was deleted
+    }
 }
