@@ -211,9 +211,12 @@ async function loadSpace(spaceId, key = null) {
         }
 
         contentDiv.append(`
-        <div class="contentItem" onclick="unlockAndShowContent('${item.name}', '${item.encryptedValue}', '${item.type}')">
-            <h2>${type} ${item.name}</h2>
-            <p></p>
+        <div class="contentItem">
+            <div class="contentItemMain" onclick="unlockAndShowContent('${item.name}', '${item.encryptedValue}', '${item.type}')">
+                <h2>${type} ${item.name}</h2>
+                <p></p>
+            </div>
+            <button class="deleteBtn" onclick="deleteContent('${item.id}', '${item.name}')" title="Delete">🗑️</button>
         </div>
         `);
     }
@@ -286,6 +289,43 @@ async function unlockAndShowContent(name, encryptedContent, type) {
     }
 
 }
+
+async function deleteContent(contentId, contentName) {
+    // Confirm deletion
+    if (!confirm(`Are you sure you want to delete "${contentName}"? This action cannot be undone.`)) {
+        return;
+    }
+
+    try {
+        let response = await fetch("/deleteContent", {
+            method: "POST",
+            headers: {
+                "x-api-key": ACCESS_KEY,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                spaceId: currentSpace.spaceId,
+                contentId: contentId
+            })
+        });
+
+        if (response.status === 200) {
+            alert(`"${contentName}" has been deleted successfully.`);
+            // Reload the space to refresh the content list
+            let key = await getEnhancedGraphicKey('Enter key to refresh space: ' + currentSpace.spaceId);
+            await loadSpace(currentSpace.spaceId, key);
+        } else if (response.status === 404) {
+            alert("Content not found.");
+        } else {
+            alert("Error deleting content. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error deleting content:", error);
+        alert("Error deleting content. Please check your connection.");
+    }
+}
+
+window.deleteContent = deleteContent;
 
 window.unlockAndShowContent = unlockAndShowContent;
 

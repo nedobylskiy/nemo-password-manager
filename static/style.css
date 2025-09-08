@@ -55,13 +55,42 @@ body {
     background: #fff;
     width: 100%;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.spaceItem:hover, .contentItem:hover{
+.contentItemMain {
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.deleteBtn {
+    background: #ff4444;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+}
+
+.deleteBtn:hover {
+    background: #cc0000;
+}
+
+.deleteBtn:active {
+    background: #990000;
+}
+
+.spaceItem:hover, .contentItemMain:hover{
     background: #b5e3ff;
 }
 
-.spaceItem:active, .contentItem:active{
+.spaceItem:active, .contentItemMain:active{
     background: #2693ff;
 }
 
